@@ -32,17 +32,29 @@ public class TgiEvents extends AbstractEventHandler {
 				.setClient_ID()
 				.list();
 
+				MUser user = MUser.get(Env.getCtx(), Env.getAD_User_ID(Env.getCtx()));
+				if (user.get_ValueAsBoolean("IsDontCountMeInConcurrSessions"))
+					return;
+
+				MRole role = MRole.get(Env.getCtx(), Env.getAD_Role_ID(Env.getCtx()));
+				if (role.get_ValueAsBoolean("IsDontCountMeInConcurrSessions"))
+					return;
+
+				MOrg org = MOrg.get(Env.getCtx(), Env.getAD_Org_ID(Env.getCtx()));
+				if (org.get_ValueAsBoolean("IsDontCountMeInConcurrSessions"))
+					return;
+
 				int realSessions = sessions.size();
 				System.out.println("real sessions : " + realSessions);
 
 				if (sessions.size() > nbMaxSession) { // besoin de vérifier s'il faut enlever des sessions
 					for (MSession session : sessions) {
 
-						if (MUser.get(Env.getCtx(), session.getCreatedBy()).get_ValueAsBoolean("DontCountMe"))
+						if (MUser.get(Env.getCtx(), session.getCreatedBy()).get_ValueAsBoolean("IsDontCountMeInConcurrSessions"))
 							realSessions--;
-						else if (MRole.get(Env.getCtx(), session.getAD_Role_ID()).get_ValueAsBoolean("DontCountMe"))
+						else if (MRole.get(Env.getCtx(), session.getAD_Role_ID()).get_ValueAsBoolean("IsDontCountMeInConcurrSessions"))
 							realSessions--;
-						else if (MOrg.get(Env.getCtx(), session.getAD_Org_ID()).get_ValueAsBoolean("DontCountMe"))
+						else if (MOrg.get(Env.getCtx(), session.getAD_Org_ID()).get_ValueAsBoolean("IsDontCountMeInConcurrSessions"))
 							realSessions--;
 						else if (session.getAD_Session_ID() == Env.getContextAsInt(Env.getCtx(), "#AD_Session_ID"))
 							realSessions--;

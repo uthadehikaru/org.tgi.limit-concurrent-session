@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Limit-concurrent-session
-Bundle-SymbolicName: limit-concurrent-session;singleton:=true
+Bundle-Name: org.tgi.limit-concurrent-session
+Bundle-SymbolicName: org.tgi.limit-concurrent-session;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: T.G.I.
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
